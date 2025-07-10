@@ -15,6 +15,7 @@
 
       tank.appendTank();
       tank.moveTank();
+      tank.rotateTank();
     };
 
     loadGrid = () => {
@@ -41,6 +42,7 @@
   class Tank {
     tank: HTMLDivElement;
     moveInterval!: number;
+    rotateInterval!: number;
 
     constructor(
       public x: number,
@@ -50,6 +52,16 @@
     ) {
       this.tank = document.createElement("div");
     }
+
+    rotateTank = () => {
+      const random = new Random();
+
+      this.rotateInterval = setInterval(() => {
+        const angle = random.generate(-180, 180);
+
+        this.tank.style.transform = `rotate(${angle}deg)`;
+      }, 400);
+    };
 
     appendTank = () => {
       this.tank.classList.add("main__tank");
@@ -92,6 +104,7 @@
 
     destroyTank = () => {
       clearInterval(this.moveInterval);
+      clearInterval(this.rotateInterval);
 
       const index = this.tankList.indexOf(this);
       if (index !== -1) {
@@ -111,7 +124,7 @@
     main.loadGrid();
 
     setInterval(() => {
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 6; i++) {
         const side = random.generate(1, 2);
         const y = random.generate(0, window.innerHeight - 100);
 
