@@ -3,6 +3,8 @@
   import Random from "../utilities/Random";
 
   class Main {
+    constructor() {}
+
     protected tankList: Tank[] = [];
     protected grid: HTMLDivElement | null =
       document.querySelector(".main__grid");
@@ -16,6 +18,7 @@
       tank.appendTank();
       tank.moveTank();
       tank.rotateTank();
+      tank.shoot();
     };
 
     loadGrid = () => {
@@ -24,6 +27,9 @@
 
       const gridVertical = document.querySelector(".main__grid__vertical");
       const gridHorizontal = document.querySelector(".main__grid__horizontal");
+
+      if (gridVertical) gridVertical.innerHTML = "";
+      if (gridHorizontal) gridHorizontal.innerHTML = "";
 
       for (let i = 0; i < width; i++) {
         const el = document.createElement("span");
@@ -40,18 +46,34 @@
   }
 
   class Tank {
-    tank: HTMLDivElement;
+    tank!: HTMLDivElement;
     moveInterval!: number;
     rotateInterval!: number;
+    angle!: number;
+    dx!: number;
+    dy!: number;
+    speed!: number;
+    type!: number;
 
     constructor(
       public x: number,
       public y: number,
       private grid: HTMLDivElement | null,
       private tankList: Tank[]
-    ) {
-      this.tank = document.createElement("div");
-    }
+    ) {}
+
+    shoot = () => {
+      switch (this.type) {
+        case 1:
+          break;
+
+        case 2:
+          break;
+
+        case 3:
+          break;
+      }
+    };
 
     rotateTank = () => {
       const random = new Random();
@@ -64,29 +86,48 @@
     };
 
     appendTank = () => {
-      this.tank.classList.add("main__tank");
-
       const random = new Random();
-      const randomTank = `main__tank-${random.generate(1, 3)}`;
-      this.tank.classList.add(randomTank);
+      const randomTankNum = random.generate(1, 3);
+      this.type = randomTankNum;
+      const randomTank = `main__tank-${randomTankNum}`;
 
+      const tankOverlay = document.createElement("div");
+
+      const tank = document.createElement("div");
+
+      tankOverlay.classList.add("main__tank__overlay");
+
+      tank.classList.add("main__tank");
+      tank.classList.add(randomTank);
+
+      tankOverlay.appendChild(tank);
+
+      this.grid?.appendChild(tankOverlay);
+
+      this.tank = tankOverlay;
       this.tank.style.position = "absolute";
       this.tank.style.top = `${this.y}px`;
       this.tank.style.left = `${this.x}px`;
-
-      this.grid?.appendChild(this.tank);
     };
 
     moveTank = () => {
       const random = new Random();
-      const speed = random.generate(100, 150);
+      const speed = random.generate(75, 100);
+      this.speed = speed;
 
       this.moveInterval = setInterval(() => {
         const dx = random.randomfloat(-1, 1);
         const dy = random.randomfloat(-1, 1);
 
-        this.x += dx + (dx < 0 ? -speed : speed);
-        this.y += dy + (dy < 0 ? -speed : speed);
+        const magnitude = Math.sqrt(dx * dx + dy * dy);
+        const normalizedDx = dx / magnitude;
+        const normalizedDy = dy / magnitude;
+
+        this.x += normalizedDx * this.speed;
+        this.y += normalizedDy * this.speed;
+
+        this.dx = dx;
+        this.dy = dy;
 
         this.tank.style.left = `${this.x}px`;
         this.tank.style.top = `${this.y}px`;
@@ -117,18 +158,24 @@
     };
   }
 
+  const submit = (e: Event) => {
+    e.preventDefault();
+  };
+
   document.addEventListener("DOMContentLoaded", () => {
     const main = new Main();
     const random = new Random();
 
     main.loadGrid();
 
+    window.addEventListener("resize", main.loadGrid);
+
     setInterval(() => {
       for (let i = 0; i < 6; i++) {
         const side = random.generate(1, 2);
         const y = random.generate(0, window.innerHeight - 100);
 
-        const x = side === 1 ? -100 : window.innerWidth + 100;
+        const x = side === 1 ? -100 : window.innerWidth;
         main.createTank(x, y);
       }
     }, 1000);
@@ -137,6 +184,40 @@
 
 <div class="main">
   <h1 class="main__title">Tank.io</h1>
+
+  <form on:submit={submit} class="main__game-form">
+    <div class="main__form-inputs">
+      <div class="main__select-game-mode__overlay">
+        <select class="main__select-game-mode">
+          <option class="main__game-mode__option" selected>Normal</option>
+          <option class="main__game-mode__option">Maze</option>
+          <option class="main__game-mode__option">Territory Conquest</option>
+          <option class="main__game-mode__option">2 Teams</option>
+          <option class="main__game-mode__option">4 Teams</option>
+          <option class="main__game-mode__option">Boss</option>
+          <option class="main__game-mode__option">Sandbox</option>
+        </select>
+
+        <div class="main__select-game-mode__bg"></div>
+      </div>
+
+      <div class="main__select-region__overlay">
+        <select class="main__select-region">
+          <option class="main__region__option" selected>Localhost</option>
+        </select>
+
+        <div class="main__select-region__bg"></div>
+      </div>
+    </div>
+
+    <input type="text" class="main__form-input" placeholder="Type nickname" />
+
+    <div class="main__play-btn__overlay">
+      <button type="submit" class="main__play-btn">Play</button>
+
+      <div class="main__play-btn__bg"></div>
+    </div>
+  </form>
 
   <div class="main__grid">
     <div class="main__grid__vertical"></div>

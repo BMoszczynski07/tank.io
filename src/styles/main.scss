@@ -1,9 +1,12 @@
+@import "../global";
+
 .main {
   width: 100vw;
   height: 100vh;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
 
   &__title {
     margin: 0;
@@ -17,6 +20,7 @@
     z-index: -2;
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
 
     &__vertical {
       display: flex;
@@ -59,7 +63,120 @@
     }
   }
 
+  &__game-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  select,
+  option,
+  input {
+    font-size: 17px;
+    font-family: $r;
+    height: 40px;
+    padding: 5px 12px;
+  }
+
+  &__form-inputs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__form-input {
+    width: 370px;
+    margin: 0;
+  }
+
+  &__select-game-mode {
+    width: 250px;
+    background: #3449ff96;
+    border: 3px solid rgb(22, 21, 139);
+    color: #def1f9;
+    text-shadow: -1px -1px 0 rgb(130, 130, 130), 1px -1px 0 rgb(130, 130, 130),
+      -1px 1px 0 rgb(130, 130, 130), 1px 1px 0 rgb(130, 130, 130);
+
+    &__overlay {
+      position: relative;
+    }
+
+    &__bg {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: #0b0b6396;
+      z-index: -1;
+    }
+  }
+
+  &__select-region {
+    border: 3px solid rgb(0, 0, 0);
+    text-shadow: -1px -1px 0 rgb(130, 130, 130), 1px -1px 0 rgb(130, 130, 130),
+      -1px 1px 0 rgb(130, 130, 130), 1px 1px 0 rgb(130, 130, 130);
+    background: #2c2c2c73;
+    color: #edf9ee;
+
+    &__overlay {
+      position: relative;
+    }
+
+    &__bg {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: rgba(56, 56, 56, 0.589);
+      z-index: -1;
+    }
+  }
+
+  &__form-input {
+    border: none;
+
+    &::placeholder {
+      color: #cccccc;
+      text-shadow: -1px -1px 0 rgb(130, 130, 130), 1px -1px 0 rgb(130, 130, 130),
+        -1px 1px 0 rgb(130, 130, 130), 1px 1px 0 rgb(130, 130, 130);
+    }
+  }
+
+  &__play-btn {
+    width: 200px;
+    height: 40px;
+    margin-top: 300px;
+    background: #19da127d;
+    border: 3px solid rgb(25, 128, 25);
+    text-shadow: -1px -1px 0 rgb(130, 130, 130), 1px -1px 0 rgb(130, 130, 130),
+      -1px 1px 0 rgb(130, 130, 130), 1px 1px 0 rgb(130, 130, 130);
+    font-size: 17px;
+    font-family: $r;
+    color: #e9f7eb;
+    cursor: pointer;
+
+    &__overlay {
+      position: relative;
+    }
+
+    &__bg {
+      z-index: -1;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: rgba(27, 124, 16, 0.578);
+    }
+  }
+
   &__tank {
+    position: absolute;
     width: 100px;
     height: 100px;
     background-repeat: no-repeat;
@@ -77,5 +194,30 @@
 
   &__tank-3 {
     background-image: url("../assets/main/tank-3.svg");
+  }
+
+  &__tank__overlay {
+    position: relative;
+    transition: 1s;
+    width: 100px;
+    height: 100px;
+  }
+
+  &__tank-bullet {
+    width: 20px;
+    height: 20px;
+
+    &__overlay {
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70px;
+      height: 20px;
+      z-index: -1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
   }
 }

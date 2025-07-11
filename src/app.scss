@@ -1,3 +1,5 @@
+@import "global";
+
 @font-face {
   font-family: "Roblox";
   src: url("./assets/fonts/ROBLOX.otf");
@@ -7,9 +9,6 @@
   font-family: "Arcade";
   src: url("./assets/fonts/Arcade.ttf");
 }
-
-$r: "Roblox", sans-serif;
-$a: "Arcade", sans-serif;
 
 *::selection {
   background: #b6b6b6;
@@ -21,7 +20,6 @@ body {
   padding: 0 !important;
   box-sizing: border-box;
   background: #f1f1f1;
-  overflow: hidden;
 
   font-family: $r;
   color: #cecece;
